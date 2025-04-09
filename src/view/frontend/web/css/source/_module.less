@@ -1,0 +1,118 @@
+/**
+ * @author      Andreas Knollmann
+ * @copyright   2014-2025 Softwareentwicklung Andreas Knollmann
+ * @license     http://www.opensource.org/licenses/mit-license.php MIT
+ */
+
+& when (@media-common = true) {
+    .fotorama {
+        .fotorama__stage {
+            .fotorama__stage__frame {
+                .product_custom_option_overlay {
+                    position: absolute;
+                    bottom: 10px;
+                    width: 100px;
+                    height: 100px;
+                    opacity: 1;
+                    transition: .3s ease;
+
+                    img.product_custom_option_overlay_image {
+                        opacity: 1;
+                        border-radius: 50%;
+                        border: 1px solid #888;
+                        width: 98px;
+                        height: 98px;
+                    }
+                }
+
+                .product_custom_option_overlay-1 {
+                    right: 10px;
+                }
+
+                .product_custom_option_overlay-2 {
+                    right: 120px;
+                }
+
+                .product_custom_option_overlay-3 {
+                    right: 230px;
+                }
+
+                .product_custom_option_overlay-4 {
+                    right: 340px;
+                }
+
+                .product_custom_option_overlay-5 {
+                    right: 450px;
+                }
+            }
+        }
+    }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__l) {
+    .fotorama {
+        .fotorama__stage {
+            .fotorama__stage__frame {
+                .product_custom_option_overlay {
+                    width: 80px;
+                    height: 80px;
+
+                    img.product_custom_option_overlay_image {
+                        width: 78px;
+                        height: 78px;
+                    }
+                }
+
+                .product_custom_option_overlay-2 {
+                    right: 100px;
+                }
+
+                .product_custom_option_overlay-3 {
+                    right: 190px;
+                }
+
+                .product_custom_option_overlay-4 {
+                    right: 280px;
+                }
+
+                .product_custom_option_overlay-5 {
+                    right: 370px;
+                }
+            }
+        }
+    }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .fotorama {
+        .fotorama__stage {
+            .fotorama__stage__frame {
+                .product_custom_option_overlay {
+                    width: 60px;
+                    height: 60px;
+
+                    img.product_custom_option_overlay_image {
+                        width: 58px;
+                        height: 58px;
+                    }
+                }
+
+                .product_custom_option_overlay-2 {
+                    right: 80px;
+                }
+
+                .product_custom_option_overlay-3 {
+                    right: 150px;
+                }
+
+                .product_custom_option_overlay-4 {
+                    right: 220px;
+                }
+
+                .product_custom_option_overlay-5 {
+                    right: 290px;
+                }
+            }
+        }
+    }
+}
