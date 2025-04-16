@@ -47,7 +47,7 @@ class CustomOptions
                 'children',
                 static::FIELD_BADGE_NAME
             ],
-            $this->getBadgeFieldConfig(80)
+            $this->getBadgeFieldConfig(90)
         );
 
         return $this->arrays->addDeepValue(
@@ -67,7 +67,7 @@ class CustomOptions
                 'children',
                 static::FIELD_BADGE_NAME
             ],
-            $this->getBadgeFieldConfig(100)
+            $this->getBadgeFieldConfig(110)
         );
     }
 
