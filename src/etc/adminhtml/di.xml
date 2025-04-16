@@ -9,4 +9,20 @@
     <type name="Magento\Catalog\Ui\DataProvider\Product\Form\Modifier\CustomOptions">
         <plugin name="infrangible_catalogproductoptionbadge" type="Infrangible\CatalogProductOptionBadge\Plugin\Catalog\Ui\DataProvider\Product\Form\Modifier\CustomOptions"/>
     </type>
+    <virtualType name="Infrangible\CatalogProductOptionBadge\Model\ImageUploader" type="Magento\Catalog\Model\ImageUploader">
+        <arguments>
+            <argument name="baseTmpPath" xsi:type="string">tmp/custom_options</argument>
+            <argument name="basePath" xsi:type="string">wysiwyg/custom_options</argument>
+            <argument name="allowedExtensions" xsi:type="array">
+                <item name="jpg" xsi:type="string">jpg</item>
+                <item name="png" xsi:type="string">png</item>
+                <item name="gif" xsi:type="string">gif</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Infrangible\CatalogProductOptionBadge\Controller\Adminhtml\Image\Upload">
+        <arguments>
+            <argument name="imageUploader" xsi:type="object">Infrangible\CatalogProductOptionBadge\Model\ImageUploader</argument>
+        </arguments>
+    </type>
 </config>

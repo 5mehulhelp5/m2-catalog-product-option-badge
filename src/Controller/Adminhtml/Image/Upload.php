@@ -82,10 +82,6 @@ class Upload extends Json
             $fileIds = array_keys($_FILES);
             $fileId = reset($fileIds);
 
-            $this->imageUploader->setBaseTmpPath('tmp/custom_options');
-            $this->imageUploader->setBasePath('wysiwyg/custom_options');
-            $this->imageUploader->setAllowedExtensions(['jpg', 'jpeg', 'png', 'gif']);
-
             $result = $this->imageUploader->saveFileToTmpDir($fileId);
             $imageName = $this->imageUploader->moveFileFromTmp(
                 $result[ 'name' ],
