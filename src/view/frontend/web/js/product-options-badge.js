@@ -119,30 +119,39 @@ define([
                     var optionValueBadgeUrl = optionValuesConfig[optionValueId];
 
                     if (optionValueBadgeUrl) {
-                        $('.fotorama .fotorama__stage .fotorama__stage__frame').each(function() {
-                            var imageElement = $(this);
+                        $.each(this.getGalleryIdentifier(), function(key, identifier) {
+                            $(identifier).each(function() {
+                                var imageElement = $(this);
 
-                            var overlayElementId = isMultiSelect ?
-                                'product-custom-option-overlay-' + optionId + '-' + optionValueId :
-                                'product-custom-option-overlay-' + optionId;
+                                var overlayElementId = isMultiSelect ?
+                                    'product-custom-option-overlay-' + optionId + '-' + optionValueId :
+                                    'product-custom-option-overlay-' + optionId;
 
-                            var overlayElement = $('<div>', {
-                                id: overlayElementId,
-                                class: 'product_custom_option_overlay',
-                                'data-option-id': optionId,
-                                'data-option-value-id': optionValueId
+                                var overlayElement = $('<div>', {
+                                    id: overlayElementId,
+                                    class: 'product_custom_option_overlay',
+                                    'data-option-id': optionId,
+                                    'data-option-value-id': optionValueId
+                                });
+                                overlayElement.appendTo(imageElement);
+
+                                var overlayImageElement = $('<img>', {
+                                    src: optionValueBadgeUrl,
+                                    class: 'product_custom_option_overlay_image'
+                                });
+                                overlayImageElement.appendTo(overlayElement);
                             });
-                            overlayElement.appendTo(imageElement);
-
-                            var overlayImageElement = $('<img>', {
-                                src: optionValueBadgeUrl,
-                                class: 'product_custom_option_overlay_image'
-                            });
-                            overlayImageElement.appendTo(overlayElement);
                         });
                     }
                 }
             }
+        },
+
+        getGalleryIdentifier: function getGalleryIdentifier() {
+            return [
+                '.gallery-placeholder .fotorama .fotorama__stage .fotorama__stage__frame',
+                '.gallery-placeholder #amasty-gallery #amasty-main-container'
+            ];
         },
 
         remove: function removeProductOptionsBadge(optionId, optionValueId) {
