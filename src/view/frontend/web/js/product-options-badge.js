@@ -24,89 +24,116 @@ define([
         _init: function initProductOptionsBadge() {
             var self = this;
 
+            $('[data-gallery-role=gallery-placeholder]', '.column.main').on('gallery:loaded amasty_gallery:loaded', function() {
+                $('select.product-custom-option').each(function() {
+                    self.handleDropdown($(this));
+                });
+
+                $('input[type="radio"].product-custom-option').each(function() {
+                    self.handleRadio($(this));
+                });
+
+                $('input[type="checkbox"].product-custom-option').each(function() {
+                    self.handleCheckbox($(this));
+                });
+            });
+
             domReady(function() {
                 $('select.product-custom-option').on('change', function() {
-                    var selectElement = $(this);
-                    var optionId = utils.findOptionId(selectElement);
-
-                    if (optionId) {
-                        var isMultiSelect = selectElement.attr('multiple');
-
-                        if (isMultiSelect) {
-                            var optionValueIds = selectElement.val();
-
-                            if (! Array.isArray(optionValueIds)) {
-                                optionValueIds = [optionValueIds];
-                            }
-
-                            var currentOverlayElements =
-                                $('.product_custom_option_overlay[data-option-id="' + optionId + '"]');
-
-                            currentOverlayElements.each(function() {
-                                var currentOptionValueId = $(this).data('option-value-id');
-
-                                if ($.inArray(currentOptionValueId, optionValueIds) === -1) {
-                                    self.remove(optionId, currentOptionValueId);
-                                }
-                            });
-
-                            $.each(optionValueIds, function(index, optionValueId) {
-                                self.add(optionId, optionValueId, true);
-                            });
-                        } else {
-                            self.remove(optionId);
-
-                            var optionValueId = selectElement.val();
-
-                            if (optionValueId) {
-                                self.add(optionId, optionValueId, false);
-                            }
-                        }
-                    }
-
-                    self.adjust();
+                    self.handleDropdown($(this));
                 });
 
                 $('input[type="radio"].product-custom-option').on('change', function() {
-                    var inputElement = $(this);
-
-                    if (inputElement.is(':checked')) {
-                        var optionId = utils.findOptionId(inputElement);
-
-                        if (optionId) {
-                            self.remove(optionId);
-
-                            var optionValueId = inputElement.val();
-
-                            if (optionValueId) {
-                                self.add(optionId, optionValueId, false);
-                            }
-                        }
-
-                        self.adjust();
-                    }
+                    self.handleRadio($(this));
                 });
 
                 $('input[type="checkbox"].product-custom-option').on('change', function() {
-                    var inputElement = $(this);
-
-                    var optionId = utils.findOptionId(inputElement);
-
-                    if (optionId) {
-                        var optionValueId = inputElement.val();
-
-                        if (optionValueId) {
-                            if (inputElement.is(':checked')) {
-                                self.add(optionId, optionValueId, true);
-                            } else {
-                                self.remove(optionId, optionValueId);
-                            }
-
-                            self.adjust();
-                        }
-                    }
+                    self.handleCheckbox($(this));
                 });
             });
+        },
+
+        handleDropdown: function handleDropdown(selectElement) {
+            var self = this;
+
+            var optionId = utils.findOptionId(selectElement);
+
+            if (optionId) {
+                var isMultiSelect = selectElement.attr('multiple');
+
+                if (isMultiSelect) {
+                    var optionValueIds = selectElement.val();
+
+                    if (! Array.isArray(optionValueIds)) {
+                        optionValueIds = [optionValueIds];
+                    }
+
+                    var currentOverlayElements =
+                        $('.product_custom_option_overlay[data-option-id="' + optionId + '"]');
+
+                    currentOverlayElements.each(function() {
+                        var currentOptionValueId = $(this).data('option-value-id');
+
+                        if ($.inArray(currentOptionValueId, optionValueIds) === -1) {
+                            self.remove(optionId, currentOptionValueId);
+                        }
+                    });
+
+                    $.each(optionValueIds, function(index, optionValueId) {
+                        self.add(optionId, optionValueId, true);
+                    });
+                } else {
+                    self.remove(optionId);
+
+                    var optionValueId = selectElement.val();
+
+                    if (optionValueId) {
+                        self.add(optionId, optionValueId, false);
+                    }
+                }
+            }
+
+            self.adjust();
+        },
+
+        handleRadio: function handleRadio(inputElement) {
+            var self = this;
+
+            if (inputElement.is(':checked')) {
+                var optionId = utils.findOptionId(inputElement);
+
+                if (optionId) {
+                    self.remove(optionId);
+
+                    var optionValueId = inputElement.val();
+
+                    if (optionValueId) {
+                        self.add(optionId, optionValueId, false);
+                    }
+                }
+
+                self.adjust();
+            }
+        },
+
+        handleCheckbox: function handleRadio(inputElement) {
+            var self = this;
+
+            var optionId = utils.findOptionId(inputElement);
+
+            if (optionId) {
+                var optionValueId = inputElement.val();
+
+                if (optionValueId) {
+                    if (inputElement.is(':checked')) {
+                        self.add(optionId, optionValueId, true);
+                    } else {
+                        self.remove(optionId, optionValueId);
+                    }
+
+                    self.adjust();
+                }
+            }
         },
 
         add: function addProductOptionsBadge(optionId, optionValueId, isMultiSelect) {
