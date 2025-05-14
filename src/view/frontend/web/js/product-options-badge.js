@@ -25,16 +25,21 @@ define([
             var self = this;
 
             $('[data-gallery-role=gallery-placeholder]', '.column.main').on('gallery:loaded amasty_gallery:loaded', function() {
-                $('select.product-custom-option').each(function() {
-                    self.handleDropdown($(this));
+                self.handleAll();
+
+                var observer = new MutationObserver(function(mutations) {
+                    $.each(mutations, function(key, mutation) {
+                        $.each(mutation.addedNodes, function(key, addedNode) {
+                            if ($(addedNode).attr('id') === 'amasty-main-image') {
+                                self.handleAll();
+                            }
+                        });
+                    });
                 });
 
-                $('input[type="radio"].product-custom-option').each(function() {
-                    self.handleRadio($(this));
-                });
-
-                $('input[type="checkbox"].product-custom-option').each(function() {
-                    self.handleCheckbox($(this));
+                observer.observe(document.querySelector('#amasty-main-container'), {
+                    subtree: true,
+                    childList: true,
                 });
             });
 
@@ -50,6 +55,22 @@ define([
                 $('input[type="checkbox"].product-custom-option').on('change', function() {
                     self.handleCheckbox($(this));
                 });
+            });
+        },
+
+        handleAll: function handleAll() {
+            var self = this;
+
+            $('select.product-custom-option').each(function() {
+                self.handleDropdown($(this));
+            });
+
+            $('input[type="radio"].product-custom-option').each(function() {
+                self.handleRadio($(this));
+            });
+
+            $('input[type="checkbox"].product-custom-option').each(function() {
+                self.handleCheckbox($(this));
             });
         },
 
