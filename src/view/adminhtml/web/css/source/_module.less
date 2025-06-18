@@ -1,0 +1,35 @@
+body.catalog-product-edit {
+    div[data-index="custom_options"] {
+        div[data-index="badge"] {
+            > div.admin__field-control {
+                > div.catalog-product-option-badge {
+                    label {
+                        > span {
+                            display: none;
+                        }
+
+                        &:before {
+                            display: none;
+                        }
+                    }
+                }
+            }
+        }
+
+        table[data-index="values"] {
+            td.catalog-product-option-badge {
+                > div.catalog-product-option-badge {
+                    > label {
+                        > span {
+                            display: none;
+                        }
+
+                        &:before {
+                            display: none;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

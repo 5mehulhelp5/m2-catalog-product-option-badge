@@ -71,24 +71,24 @@ class CustomOptions
         );
     }
 
-
     protected function getBadgeFieldConfig(int $sortOrder): array
     {
         return [
             'arguments' => [
                 'data' => [
                     'config' => [
-                        'label'          => __('Badge'),
-                        'componentType'  => Field::NAME,
-                        'dataScope'      => static::FIELD_BADGE_NAME,
-                        'dataType'       => Text::NAME,
-                        'sortOrder'      => $sortOrder,
-                        'formElement'    => 'imageUploader',
-                        'elementTmpl'    => 'ui/form/element/uploader/uploader',
-                        'previewTmpl'    => 'Magento_Catalog/image-preview',
-                        'uploaderConfig' => [
+                        'label'             => __('Badge'),
+                        'componentType'     => Field::NAME,
+                        'dataScope'         => static::FIELD_BADGE_NAME,
+                        'dataType'          => Text::NAME,
+                        'sortOrder'         => $sortOrder,
+                        'formElement'       => 'imageUploader',
+                        'elementTmpl'       => 'ui/form/element/uploader/uploader',
+                        'previewTmpl'       => 'Magento_Catalog/image-preview',
+                        'uploaderConfig'    => [
                             'url' => 'product_option_badge/image/upload'
-                        ]
+                        ],
+                        'additionalClasses' => 'catalog-product-option-badge'
                     ]
                 ]
             ]
