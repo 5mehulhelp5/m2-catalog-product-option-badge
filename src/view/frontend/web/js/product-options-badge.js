@@ -19,7 +19,12 @@ define([
         galleryIdentifier: [
             '.gallery-placeholder .fotorama .fotorama__stage .fotorama__stage__shaft',
             '.gallery-placeholder #amasty-gallery #amasty-main-container'
-        ]
+        ],
+        optionTypes: {
+            dropdown: 'select.product-custom-option',
+            radio: 'input[type="radio"].product-custom-option',
+            checkbox: 'input[type="checkbox"].product-custom-option'
+        }
     };
 
     $.widget('mage.productOptionsBadge', {
@@ -54,16 +59,10 @@ define([
             });
 
             domReady(function() {
-                $('select.product-custom-option').on('change', function() {
-                    self.handleDropdown($(this));
-                });
-
-                $('input[type="radio"].product-custom-option').on('change', function() {
-                    self.handleRadio($(this));
-                });
-
-                $('input[type="checkbox"].product-custom-option').on('change', function() {
-                    self.handleCheckbox($(this));
+                $.each(self.options.optionTypes, function(type, selector) {
+                    $(selector, self.element).on('change', function() {
+                        self.handleOptionChange(type, $(this));
+                    })
                 });
             });
         },
@@ -71,17 +70,23 @@ define([
         handleAll: function handleAll() {
             var self = this;
 
-            $('select.product-custom-option').each(function() {
-                self.handleDropdown($(this));
+            $.each(self.options.optionTypes, function(type, selector) {
+                $(selector, self.element).on('change', function() {
+                    self.handleOptionChange(type, $(this));
+                })
             });
+        },
 
-            $('input[type="radio"].product-custom-option').each(function() {
-                self.handleRadio($(this));
-            });
+        handleOptionChange: function handleOptionChange(type, inputElement) {
+            var self = this;
 
-            $('input[type="checkbox"].product-custom-option').each(function() {
-                self.handleCheckbox($(this));
-            });
+            if (type === 'dropdown') {
+                self.handleDropdown(inputElement);
+            } else if (type === 'radio') {
+                self.handleRadio(inputElement);
+            } else if (type === 'checkbox') {
+                self.handleCheckbox(inputElement);
+            }
         },
 
         handleDropdown: function handleDropdown(selectElement) {
@@ -170,7 +175,7 @@ define([
         add: function addProductOptionsBadge(optionId, optionValueId, isMultiSelect) {
             var self = this;
 
-            var optionConfig = this.options.config[optionId];
+            var optionConfig = self.options.config[optionId];
 
             if (optionConfig) {
                 var optionValuesConfig = optionConfig.values;
@@ -179,7 +184,7 @@ define([
                     var optionValueBadgeUrl = optionValuesConfig[optionValueId];
 
                     if (optionValueBadgeUrl) {
-                        $.each(this.getGalleryIdentifier(), function(key, identifier) {
+                        $.each(self.getGalleryIdentifier(), function(key, identifier) {
                             $(identifier, self.options.parentSelector).each(function() {
                                 var imageElement = $(this);
 

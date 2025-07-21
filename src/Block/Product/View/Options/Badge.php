@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Infrangible\CatalogProductOptionBadge\Block\Product\View\Options;
 
-use FeWeDev\Base\Json;
+use Infrangible\CatalogProductOptionBadge\Helper\Data;
 use Infrangible\Core\Helper\Registry;
+use LogicException;
 use Magento\Catalog\Model\Product;
-use Magento\Catalog\Model\Product\Option\Value;
 use Magento\Framework\View\Element\Template;
 
 /**
@@ -20,13 +20,13 @@ class Badge extends Template
     /** @var Registry */
     protected $registryHelper;
 
-    /** @var Json */
-    protected $json;
+    /** @var Data */
+    protected $helper;
 
     /** @var Product */
     private $product;
 
-    public function __construct(Template\Context $context, Registry $registryHelper, Json $json, array $data = [])
+    public function __construct(Template\Context $context, Registry $registryHelper, Data $helper, array $data = [])
     {
         parent::__construct(
             $context,
@@ -34,7 +34,7 @@ class Badge extends Template
         );
 
         $this->registryHelper = $registryHelper;
-        $this->json = $json;
+        $this->helper = $helper;
     }
 
     public function getProduct(): Product
@@ -43,7 +43,7 @@ class Badge extends Template
             if ($this->registryHelper->registry('current_product')) {
                 $this->product = $this->registryHelper->registry('current_product');
             } else {
-                throw new \LogicException('Product is not defined');
+                throw new LogicException('Product is not defined');
             }
         }
 
@@ -52,33 +52,6 @@ class Badge extends Template
 
     public function getOptionsConfig(): string
     {
-        $config = [];
-
-        foreach ($this->getProduct()->getOptions() as $option) {
-            $badge = $option->getData('badge');
-
-            if (is_array($badge)) {
-                $badge = reset($badge);
-
-                $config[ $option->getId() ] = $badge[ 'url' ];
-            }
-
-            $values = $option->getValues();
-
-            if (is_array($values)) {
-                /** @var Value $value */
-                foreach ($values as $value) {
-                    $badge = $value->getData('badge');
-
-                    if (is_array($badge)) {
-                        $badge = reset($badge);
-
-                        $config[ $option->getId() ][ 'values' ][ $value->getId() ] = $badge[ 'url' ];
-                    }
-                }
-            }
-        }
-
-        return $this->json->encode($config);
+        return $this->helper->getOptionsConfig($this->getProduct()->getOptions());
     }
 }
