@@ -12,7 +12,14 @@ define([
     'use strict';
 
     var globalOptions = {
-        config: {}
+        config: {},
+        parentSelector: '.column.main',
+        galleryPlaceholderSelector: '[data-gallery-role=gallery-placeholder]',
+        galleryLoadedEventName: 'gallery:loaded amasty_gallery:loaded',
+        galleryIdentifier: [
+            '.gallery-placeholder .fotorama .fotorama__stage .fotorama__stage__shaft',
+            '.gallery-placeholder #amasty-gallery #amasty-main-container'
+        ]
     };
 
     $.widget('mage.productOptionsBadge', {
@@ -24,7 +31,7 @@ define([
         _init: function initProductOptionsBadge() {
             var self = this;
 
-            $('[data-gallery-role=gallery-placeholder]', '.column.main').on('gallery:loaded amasty_gallery:loaded', function() {
+            $(self.options.galleryPlaceholderSelector, self.options.parentSelector).on(self.options.galleryLoadedEventName, function() {
                 self.handleAll();
 
                 var observer = new MutationObserver(function(mutations) {
@@ -37,10 +44,13 @@ define([
                     });
                 });
 
-                observer.observe(document.querySelector('#amasty-main-container'), {
-                    subtree: true,
-                    childList: true,
-                });
+                var amastyContainer = document.querySelector('#amasty-main-container');
+                if (amastyContainer) {
+                    observer.observe(document.querySelector('#amasty-main-container'), {
+                        subtree: true,
+                        childList: true,
+                    });
+                }
             });
 
             domReady(function() {
@@ -158,6 +168,8 @@ define([
         },
 
         add: function addProductOptionsBadge(optionId, optionValueId, isMultiSelect) {
+            var self = this;
+
             var optionConfig = this.options.config[optionId];
 
             if (optionConfig) {
@@ -168,7 +180,7 @@ define([
 
                     if (optionValueBadgeUrl) {
                         $.each(this.getGalleryIdentifier(), function(key, identifier) {
-                            $(identifier).each(function() {
+                            $(identifier, self.options.parentSelector).each(function() {
                                 var imageElement = $(this);
 
                                 var overlayElementId = isMultiSelect ?
@@ -196,10 +208,7 @@ define([
         },
 
         getGalleryIdentifier: function getGalleryIdentifier() {
-            return [
-                '.gallery-placeholder .fotorama .fotorama__stage .fotorama__stage__frame',
-                '.gallery-placeholder #amasty-gallery #amasty-main-container'
-            ];
+            return this.options.galleryIdentifier;
         },
 
         remove: function removeProductOptionsBadge(optionId, optionValueId) {
