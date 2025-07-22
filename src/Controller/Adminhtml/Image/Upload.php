@@ -71,6 +71,11 @@ class Upload extends Json
                                         $_FILES[ $fileId ][ $key ] = $value[ 'badge' ];
                                     }
                                 }
+                            } elseif (array_key_exists(
+                                'image',
+                                $options
+                            )) {
+                                $_FILES[ $fileId ][ $key ] = $options[ 'image' ];
                             }
                         }
                     }

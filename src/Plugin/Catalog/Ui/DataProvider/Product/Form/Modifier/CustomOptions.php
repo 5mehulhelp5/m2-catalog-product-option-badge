@@ -83,7 +83,7 @@ class CustomOptions
                         'dataType'          => Text::NAME,
                         'sortOrder'         => $sortOrder,
                         'formElement'       => 'imageUploader',
-                        'elementTmpl'       => 'ui/form/element/uploader/uploader',
+                        'elementTmpl'       => 'ui/form/element/uploader/image',
                         'previewTmpl'       => 'Magento_Catalog/image-preview',
                         'uploaderConfig'    => [
                             'url' => 'product_option_badge/image/upload'
